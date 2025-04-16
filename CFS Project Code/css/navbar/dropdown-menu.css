@@ -1,0 +1,95 @@
+@font-face {     
+font-family: 'MyCustomFont';   
+ src: url('C:/Users/knxt402/Desktop/ICSA/CHA/css/AbadiMTStd.otf') format('opentype'); 
+}
+
+body {
+	
+    font-family: 'MyCustomFont';
+    overflow-y: scroll; /* Always show vertical scrollbar to prevent layout shifting */
+    margin: 0; /* Reset default margin to ensure consistent layout */
+    padding: 0; /* Reset default padding for consistency */
+    line-height: 1.6; /* Set a comfortable line height for readability */
+    background-color: #ffffff; /* Set a background color */
+    color: #00008B; /* Set a default text color */
+}
+a {
+    color: #00008B;
+}
+
+.wrapper{
+min-height: calc(100vh - 70px);
+	width:100%;
+	position: relative;
+
+}
+.navigationDesktop{
+	background: #00008B;; /*We need change here;*/
+}
+
+nav {
+	height:40px;
+	width:100%; 
+	margin:7px;
+	text-align: left;
+	background: #00008B; /*We need change here;*/
+	/*text-transform: uppercase;*/
+}
+
+nav a{
+	display:block;
+	text-decoration: none;
+	font-weight: bold;
+	font-size:13pt;
+	color:white;
+}
+
+nav a:hover{
+	background:#4682B4;
+	color:white;
+}
+
+nav ul{
+	list-style: none;
+}
+
+nav ul li{
+	float:left;
+	width:140px;
+	height:40px;
+	line-height: 40px;
+	background: #00008B; /*We need change here;*/ 
+}
+
+nav ul ul li{
+position: relative;
+display:none;
+}
+
+nav ul ul ul{
+	display:none;
+}
+
+nav ul li:hover ul li{
+	display: block;
+	animation: navmenu 500ms forwards;
+}
+
+@keyframes navmenu{
+	0%{
+		opacity:0;
+		top:5px;
+	}
+	100%{
+		opacity:1;
+		top:0px;
+	}
+}
+
+nav ul ul li:hover ul{
+	display:block;
+	position:absolute;
+	width:140px;
+	left:140px;
+	top:0px;
+}

@@ -1,0 +1,909 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="F1MasterPage.master.cs" Inherits="Formula1_F1MasterPage" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%: Page.Title %></title>
+    <link rel="icon" href="../assets/images/Formula1/LoginImage/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="../assets/compiled/css/app.css" />
+    <link rel="stylesheet" href="../assets/compiled/css/app-dark.css" />
+    <link rel="stylesheet" href="../assets/compiled/css/iconly.css" />
+    <link rel="stylesheet" href="../assets/extensions/toastify-js/src/toastify.css" />
+    <!-- Style Flipdown -->
+    <link href="../assets/css/FlipClock.css" rel="stylesheet" />
+    <%--style for the whole body--%>
+    <style>
+        .content-wrapper {
+            opacity: 0.975 !important;
+        }
+    </style>
+    <style>
+        body {
+            background-image: url('../assets/images/Formula1/LoginImage/F4.jpeg'); /*FB23_r0001_001-1.png*/
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <style>
+        .count-down {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+            margin-top: -50px;
+            margin-bottom: -40px;
+            margin-right: -200px;
+        }
+
+            .count-down .flipdown {
+                width: 500px;
+                display: flex;
+            }
+
+        .flipdown .rotor-group {
+            transform: scale(0.5); /* Scale down the rotor group */
+            transform-origin: center;
+            margin: 0 -29px; /* Reduce the margin */
+        }
+
+        @media (max-width: 550px) {
+            .count-down {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+    <%--Right side model Style--%>
+    <style>
+        .modal.right .modal-dialog {
+            position: fixed;
+            margin: auto;
+            width: fit-content;
+            height: 95%;
+            bottom: 0;
+            right: -320px;
+            transition: right 0.3s ease-out;
+        }
+
+        .modal.right .modal-content {
+            height: 100%;
+            overflow: scroll !important;
+        }
+
+        .modal.right.show .modal-dialog {
+            right: 0;
+        }
+    </style>
+    <style>
+        /*Page Loading Css*/
+        #cover-spin {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 9999;
+            display: none;
+        }
+
+        @-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #cover-spin::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 48%;
+            top: 40%;
+            width: 40px;
+            height: 40px;
+            border-style: solid;
+            border-color: white;
+            border-top-color: transparent;
+            border-width: 4px;
+            border-radius: 50%;
+            -webkit-animation: spin .8s linear infinite;
+            animation: spin .8s linear infinite;
+        }
+    </style>
+    <%--Three dots drop down menu style--%>
+    <style>
+        .ThreeDotdropdown {
+            position: absolute;
+            display: inline-block;
+            right: 10px;
+            top: 10px;
+        }
+
+        .dropbtn {
+            background-color: transparent !important;
+            border: none;
+            font-size: 34px !important;
+            cursor: pointer;
+        }
+
+        .ThreeDotdropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 9999;
+        }
+
+            .ThreeDotdropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+        .show {
+            display: block;
+        }
+    </style>
+    <%--Read more button style--%>
+    <style>
+        .custom-btn {
+            width: 130px;
+            height: 30px;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px 25px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
+            outline: none;
+        }
+        /* 5 */
+        .Animebtn-5 {
+            width: 130px;
+            height: 30px;
+            line-height: 33px;
+            padding: 0;
+            border: none;
+            background: rgb(255,27,0);
+            background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
+        }
+
+            .Animebtn-5:hover {
+                color: #f0094a;
+                background: transparent;
+                box-shadow: none;
+            }
+
+            .Animebtn-5:before,
+            .Animebtn-5:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 2px;
+                width: 0;
+                background: #f0094a;
+                box-shadow: -1px -1px 5px 0px #fff, 7px 7px 20px 0px #0003, 4px 4px 5px 0px #0002;
+                transition: 400ms ease all;
+            }
+
+            .Animebtn-5:after {
+                right: inherit;
+                top: inherit;
+                left: 0;
+                bottom: 0;
+            }
+
+            .Animebtn-5:hover:before,
+            .Animebtn-5:hover:after {
+                width: 100%;
+                transition: 800ms ease all;
+            }
+    </style>
+    <%--Style for the race name in the title--%>
+    <style>
+        .count-down .tooltiptext {
+            visibility: hidden;
+            width: fit-content;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px 5px 10px;
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+        }
+
+            .count-down .tooltiptext::after {
+                content: "";
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent black transparent;
+            }
+
+        .count-down:hover .tooltiptext {
+            visibility: visible;
+        }
+    </style>
+    <%--Style for the Signal strength bars--%>
+    <style>
+        .signal-bars {
+            display: flex;
+            justify-content: space-between;
+            width: 35px;
+            height: 20px;
+            margin-right: 20px;
+        }
+
+        .bar {
+            width: 4px;
+            background-color: #ccc;
+            transition: height 0.5s, background-color 0.5s;
+        }
+
+        #bar1 {
+            height: 20%;
+            margin-top: 16px;
+        }
+
+        #bar2 {
+            height: 40%;
+            margin-top: 12px;
+        }
+
+        #bar3 {
+            height: 60%;
+            margin-top: 8px;
+        }
+
+        #bar4 {
+            height: 80%;
+            margin-top: 4px;
+        }
+
+        #bar5 {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="cover-spin"></div>
+        <div id="app">
+            <div id="main" class="layout-horizontal">
+                <header class="mb-5" style="position: sticky !important; top: 0px !important; z-index: 9999;">
+                    <div class="header-top">
+                        <div class="container">
+                            <div style="margin-bottom: -15px;" class="input-group">
+                                <a href="../Formula1/F1Dashboard.aspx">
+                                    <img height="60" width="60" src="../assets/images/Formula1/LoginImage/logo.png" alt="Logo"></a>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <p style="margin-top: 5px;"><b>ULTRA F1 FANTASY LEAGUE</b></p>
+                                <p style="margin-top: 30px; margin-left: -210px;"><b><span id="currentDateTime"></span></b></p>
+                            </div>
+                            <div class="count-down">
+                                <div class="flipdown" id="flipdown"></div>
+                                <span id="Racetooltiptext" class="tooltiptext"></span>
+                            </div>
+                            <div class="header-top-right">
+                                <div class="dropdown">
+                                    <a href="#" id="topbarUserDropdown" class="user-dropdown d-flex align-items-center dropend dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
+                                        <div class="avatar avatar-md2">
+                                            <img style="height: 55px; width: 55px;" src="../assets/images/Formula1/UserImage/NoImage.jpg" id="UserAvatar" alt="UserImage">
+                                        </div>
+                                        <div class="text">
+                                            <h5 class="user-dropdown-name" id="NameoftheCurrentUser"></h5>
+                                        </div>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
+                                        <li>
+                                            <div style="margin-left: 25px;" class="theme-toggle d-flex gap-2  align-items-center mt-2">
+                                                <div title="Network Signal Strength" class="signal-bars">
+                                                    <div class="bar" id="bar1"></div>
+                                                    <div class="bar" id="bar2"></div>
+                                                    <div class="bar" id="bar3"></div>
+                                                    <div class="bar" id="bar4"></div>
+                                                    <div class="bar" id="bar5"></div>
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                    role="img" class="iconify iconify--system-uicons" width="20" height="20"
+                                                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
+                                                    <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path
+                                                            d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+                                                            opacity=".3">
+                                                        </path>
+                                                        <g transform="translate(-210 -1)">
+                                                            <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
+                                                            <circle cx="220.5" cy="11.5" r="4"></circle>
+                                                            <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
+                                                        </g>
+                                                    </g>
+                                                </svg>
+                                                <div class="form-check form-switch fs-6">
+                                                    <input class="form-check-input  me-0" title="Light / Dark Mode" type="checkbox" onclick="ChangetheFlipClockColor(this.checked); Changethetablecolors(this.checked)" id="toggle-dark" style="cursor: pointer">
+                                                    <label class="form-check-label"></label>
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                                                    role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
+                                                    viewBox="0 0 24 24">
+                                                    <path fill="currentColor"
+                                                        d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li style="margin-top: 5px;"><a class="dropdown-item" href="../Formula1/F1UserProfile.aspx">My Account</a></li>
+                                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" id="LogOutBtn" onclick="Javascript: sessionStorage.clear(); localStorage.clear();" href="../Formula1LogIn.aspx">Logout</a></li>
+                                    </ul>
+                                </div>
+
+                                <!-- Burger button responsive -->
+                                <a href="#" class="burger-btn d-block d-xl-none">
+                                    <i class="bi bi-justify fs-3"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <nav style="background-color: #E10600;" class="main-navbar">
+                        <div class="container">
+                            <ul>
+                                <li class="menu-item">
+                                    <a href="F1Dashboard.aspx" class='menu-link'>
+                                        <i style="margin-top: -7px;" class="bi bi-grid-fill"></i><span><b style="color: white;">Dashboard</b></span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item active has-sub">
+                                    <a href="#" class='menu-link'>
+                                        <i style="margin-top: -7px;" class="bi bi-database-fill-check"></i><span><b style="color: white;">Masters</b></span>
+                                    </a>
+                                    <div class="submenu ">
+                                        <div class="submenu-group-wrapper">
+                                            <ul class="submenu-group">
+                                                <li
+                                                    class="submenu-item  ">
+                                                    <a href="../Formula1/DriverDetails.aspx"
+                                                        class='submenu-link'><b>Drivers</b></a>
+                                                </li>
+                                                <li
+                                                    class="submenu-item  ">
+                                                    <a href="../Formula1/ConstructorDetails.aspx"
+                                                        class='submenu-link'><b>Constructors</b></a>
+                                                </li>
+                                                <li
+                                                    class="submenu-item  ">
+                                                    <a href="../Formula1/CircuitsDetails.aspx"
+                                                        class='submenu-link'><b>Circuits</b></a>
+                                                </li>
+                                                <li
+                                                    class="submenu-item  ">
+                                                    <a href="../Formula1/ScheduleDetails.aspx"
+                                                        class='submenu-link'><b>Schedule</b></a>
+                                                </li>
+                                                <li
+                                                    class="submenu-item  ">
+                                                    <a href="../Formula1/PointsDetails.aspx"
+                                                        class='submenu-link'><b>Points</b></a>
+                                                </li>
+                                                <li
+                                                    class="submenu-item  ">
+                                                    <a href="../Formula1/RaceResult.aspx"
+                                                        class='submenu-link'><b>Race Results</b></a>
+                                                </li>
+                                                <li
+                                                    class="submenu-item  ">
+                                                    <a href="../Formula1/TotalUsers.aspx"
+                                                        class='submenu-link'><b>Competitors</b></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="../Formula1/F1TeamUp.aspx" class='menu-link'>
+                                        <i style="margin-top: -7px;" class="bi bi-people-fill"></i><span><b style="color: white;">Team</b></span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="../Formula1/F1RaceEntry.aspx" class='menu-link'>
+                                        <i style="margin-top: -7px;" class="bi bi-gear-wide-connected"></i><span><b style="color: white;">Race Entry</b></span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="../Formula1/LadderChallenge.aspx" class='menu-link'>
+                                        <i style="margin-top: -7px;" class="bi bi-award-fill"></i><span><b style="color: white;">Ladder Challenge</b></span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="../Formula1/RacePrediction.aspx" class='menu-link'>
+                                        <i style="margin-top: -7px;" class="bi bi-clipboard2-data"></i><span><b style="color: white;">Race Prediction</b></span>
+                                    </a>
+                                </li>
+
+                                <li class="menu-item">
+                                    <a href="../Formula1/RulesandRegulation.aspx" class='menu-link'>
+                                        <i style="margin-top: -7px;" class="bi bi-list-check"></i><span><b style="color: white;">Rules & Regulations</b></span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
+                <asp:ScriptManager runat="server">
+                </asp:ScriptManager>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+
+                <footer>
+                    <div class="container">
+                        <div class="footer clearfix mb-0 text-muted">
+                            <div class="float-start">
+                                <p style="border: 1px solid black; padding: 0 2px 0 2px; background-color: black; color: white; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                    <b>2024 &copy; V 1.0</b>
+                                </p>
+                            </div>
+                            <div class="float-end">
+                                <p style="border: 1px solid black; padding: 0 2px 0 2px; background-color: black; color: white; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                    <b>&copy; Powered By Glob Data Analytics</b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <%--More Details--%>
+        <div class="modal fade text-left" id="ImagePreview" tabindex="-1" style="z-index: 9999;"
+            role="dialog" aria-labelledby="myModalLabel1101"
+            aria-hidden="true" data-bs-backdrop="false">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-full"
+                role="document">
+                <div class="modal-content" style='width: 100%; height: 100%;'>
+                    <div class="modal-header bg-success">
+                        <h5 class="modal-title white" id="myModalLabel11012">Preview
+                        </h5>
+                        <button type="button" class="close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <span id="AppendableFileName"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="ModelCloseforPreview"
+                            class="btn btn-light-secondary"
+                            data-bs-dismiss="modal">
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Close</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%--More Details--%>
+
+        <script>
+            //Appending the Iframe tag to the model
+            function AppendIframe(URL) {
+                document.getElementById("AppendableFileName").innerHTML = "<iframe style='width: 100%;height: 100%;border: none;' src='" + URL + "'></iframe>";
+            }
+
+            //Checking Session in every page load and appending the user's name in the Dashboard
+            function CheckingSessions() {
+                let SessionUserName = localStorage.getItem("OriginalUserName");
+                document.getElementById("NameoftheCurrentUser").innerText = "Hi " + SessionUserName;
+
+                if (SessionUserName == "" || SessionUserName == null) {
+                    document.getElementById("LogOutBtn").click();
+                    return;
+                }
+            }
+
+            //common Error Message - Shows in model
+            function CommonErrormsg(successorerror, ErrorMsg) {
+                if (ErrorMsg != "") {
+                    Swal.fire({
+                        icon: successorerror,
+                        title: ErrorMsg
+                    })
+                }
+            }
+        </script>
+
+        <script>
+            //Onclicking the three dots showing the dropdown menu
+            function toggleDropdown(DropDownID) {
+                document.getElementById(DropDownID).classList.toggle("show");
+                localStorage.setItem("ThreeDotID", DropDownID);
+            }
+
+            //Onclicking somewhere - Hidding the dropdown menu
+            window.onclick = function () {
+                var ThreeDotValue = localStorage.getItem("ThreeDotID");
+                document.getElementById(ThreeDotValue).classList.remove("show");
+            }
+        </script>
+
+        <script>
+            // Showing the current date time in the dashboard
+            function updateDateTime() {
+                // Get the current date and time
+                const currentDate = new Date();
+                // Define options for the date and time format
+                const options = {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    hour12: true,
+                };
+                // Format the date and time
+                const formattedDate = currentDate.toLocaleString('en-US', options);
+                // Display the formatted date and time in the HTML element
+                document.getElementById('currentDateTime').textContent = formattedDate;
+            }
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
+            CheckingSessions();
+
+            //Validating the Email while typing
+            function validateEmail(email) {
+                const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                return regex.test(email);
+            }
+
+        </script>
+        <script>      
+            document.addEventListener('DOMContentLoaded', () => {
+                //Checking the user details have entered or not
+                var url_string = window.location.href;
+                var url = new URL(url_string);
+                var fileName = getFileNameFromUrl(url);
+
+                if (fileName != "F1UserProfile.aspx") {
+                    CheckingtheUserDetails();
+                }
+
+                //Triggering some functions after the page content loaded
+                var Triggeredornot = localStorage.getItem("GettingTimeandRaceNameTOrN");
+
+                if (!Triggeredornot) {
+                    Savingthetimedata("NA");
+                }
+                else { GettingTimeandRaceNameValues(); }
+
+                setTimeout(() => {
+                    ChangetheFlipClockColor(document.getElementById("toggle-dark").checked);
+                }, 1000);
+
+                GettingUsersImageData();
+            });
+
+            //Used to get the file name from the URL
+            function getFileNameFromUrl(url) {
+                // Create a URL object
+                var urlObject = new URL(url);
+                // Get the pathname from the URL object
+                var pathname = urlObject.pathname;
+                // Split the pathname by '/' and get the last element
+                var fileName = pathname.split('/').pop();
+                return fileName;
+            }
+
+            //Getting the upcomming race name and its time from database to show in dashboard
+            function Savingthetimedata(e) {
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "../Formula1/F1Dashboard.aspx/GettingTimeandRaceNameValuesFromDB",
+                    data: "{'Dummy':'Dummy'}",
+                    dataType: "json",
+                    success: function (response) {
+                        var data = JSON.parse(response.d);
+
+                        if (e == "RaceEntry") {
+                            if (data.Message == "Success") {
+                                document.getElementById("YearRoundDataValue").innerText = data.Year + " / " + data.Round;
+                            }
+                            else {
+                                CommonErrormsg('error', data.Message);
+                            }
+                        }
+                        else {
+                            if (data.Message == "Success") {
+                                localStorage.setItem("GettingTimeandRaceNameTOrN", "true");
+                                localStorage.setItem("WeekendRaceName", data.RaceName);
+                                localStorage.setItem("WeekendRaceDateTime", data.DateTimeValue);
+                                GettingTimeandRaceNameValues();
+                            }
+                            else {
+                                CommonErrormsg('error', data.Message);
+                            }
+                        }
+                    },
+                    error: function (result) {
+                        CommonErrormsg('error', 'Error in Ajax');
+                    }
+                });
+            }
+
+            //Calculating the time left for the upcoming race
+            function GettingTimeandRaceNameValues() {
+                var RaceDateTimeValue = localStorage.getItem("WeekendRaceName");
+                document.getElementById("Racetooltiptext").innerText = RaceDateTimeValue;
+
+                var DateTimeValue = localStorage.getItem("WeekendRaceDateTime");
+
+                // Unix timestamp (in seconds) to count down to
+                var toDayFromNow = (new Date(DateTimeValue).getTime() / 1000) + (3600 / 60 / 60 / 24) - 1; //Dec 31, 2024 23:59:59
+
+                // Set Up FlipDown
+                var flipdown = new FlipDown(toDayFromNow)
+                    // Start The Count Down
+                    .start()
+                    // Check if the countdown has ended
+                    .ifEnded(function () {
+                        document.getElementById("RaceEntryButtonsDiv").innerHTML = '';
+                    });
+            }
+
+            //Change the dashboard flip clock color based on the light and dark mode
+            function ChangetheFlipClockColor(Values) {
+                if (Values == true) {
+                    document.getElementById('flipdown').classList.toggle('modification');
+
+                    const headers = document.getElementsByTagName('th');
+                    for (let i = 0; i < headers.length; i++) {
+                        headers[i].style.borderBottom = '1px solid white';
+                        headers[i].style.backgroundColor = '#2D2D40';
+                        headers[i].style.color = 'white';
+                    }
+
+                    const Subheaders = document.getElementsByTagName('td');
+                    for (let i = 0; i < Subheaders.length; i++) {
+                        Subheaders[i].style.backgroundColor = '#2D2D40';
+                        Subheaders[i].style.color = 'white';
+                    }
+
+                    var elements = document.getElementsByClassName("ThreeDotdropdown-content");
+                    for (var i = 0; i < elements.length; i++) {
+                        elements[i].style.backgroundColor = "black";
+                    }
+                }
+                else {
+                    document.getElementById('flipdown').classList.remove('modification');
+
+                    const headers = document.getElementsByTagName('th');
+                    for (let i = 0; i < headers.length; i++) {
+                        headers[i].style.borderBottom = '1px solid black';
+                        headers[i].style.backgroundColor = '#E6EBF2';
+                        headers[i].style.color = 'black';
+                    }
+
+                    const Subheaders = document.getElementsByTagName('td');
+                    for (let i = 0; i < Subheaders.length; i++) {
+                        Subheaders[i].style.backgroundColor = '#E6EBF2';
+                        Subheaders[i].style.color = 'black';
+                    }
+
+                    var elements = document.getElementsByClassName("ThreeDotdropdown-content");
+                    for (var i = 0; i < elements.length; i++) {
+                        elements[i].style.backgroundColor = " #f9f9f9";
+                    }
+                }
+            }
+
+            //checking the drop down not to allow the free text
+            function DrpDwnFreeTextCheckFormulaone(e) {
+                if (e.value != "") {
+                    var options = e.list.options;
+                    var k = 0;
+                    for (var i = 0; i < options.length; i++) {
+                        if (e.value == options[i].value) {
+                            e.className = "form-control";
+                            k = 1;
+                            return;
+                        }
+                    }
+                    if (k == 0) {
+                        e.value = "";
+                        e.className = "form-control is-invalid";
+                    }
+                }
+                else if (e.value == "") {
+                    e.className = "form-control";
+                }
+            }
+
+            //Getting the user's image from the database and appending on the dashboard profile
+            function GettingUsersImageData() {
+
+                let SessionUserIdName = localStorage.getItem("UserName");
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "../Formula1/F1Dashboard.aspx/GettingUsersImageDataFromDB",
+                    data: "{'UserID':'" + SessionUserIdName + "'}",
+                    dataType: "json",
+                    success: function (response) {
+                        var data = JSON.parse(response.d);
+
+                        if (data.Message == "Success") {
+                            document.getElementById("UserAvatar").src = data.ImageSrc;
+                        }
+                        else {
+                            CommonErrormsg('error', data.Message);
+                        }
+                    },
+                    error: function (result) {
+                        CommonErrormsg('error', 'Error in Ajax');
+                    }
+                });
+            }
+
+            //Checking the user details have entered or not
+            function CheckingtheUserDetails() {
+
+                let SessionUserIdName = localStorage.getItem("UserName");
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "../Formula1/F1Dashboard.aspx/CheckingtheUserDetailsFromDB",
+                    data: "{'UserID':'" + SessionUserIdName + "'}",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.d != "Success") {
+                            window.location = "../Formula1/F1UserProfile.aspx";
+                        }
+                    },
+                    error: function (result) {
+                        CommonErrormsg('error', 'Error in Ajax');
+                    }
+                });
+            }
+
+        </script>
+        <%--Checking Signal Strength js--%>
+        <script>
+            function getSignalStrength() {
+                if (navigator.connection) {
+                    const signalStrength = Math.floor(navigator.connection.downlink);
+                    return Math.min(signalStrength, 5); // Ensure the value is between 0 and 5
+                } else {
+                    return 1;
+                }
+            }
+
+            function updateSignalBars(signalStrength) {
+                const bars = document.querySelectorAll('.bar');
+                bars.forEach((bar, index) => {
+                    if (index < signalStrength) {
+                        bar.style.backgroundColor = getBarColor(signalStrength);
+                    } else {
+                        bar.style.backgroundColor = '#ccc';
+                    }
+                });
+            }
+
+            function getBarColor(signalStrength) {
+                // Define color based on signal strength
+                const colors = ['red', 'orange', 'yellow', 'lightgreen', 'green'];
+                return colors[signalStrength - 1] || '#ccc';
+            }
+
+            function checkSignalStrength() {
+                const signalStrength = getSignalStrength();
+                updateSignalBars(signalStrength);
+            }
+
+            // Check signal strength every minute (60000 milliseconds)
+            setInterval(checkSignalStrength, 30000);
+
+            // Initial check
+            checkSignalStrength();
+        </script>
+        <%--Checking Signal Strength js--%>
+        <script>
+            //Clearing and logging out of page when the user is in-active
+            let inactivityTime = function () {
+                let time;
+                let maxInactiveTime = 900000; // 15 minutes (in milliseconds)
+
+                // Reset the timer on user activity
+                window.onload = resetTimer;
+                document.onmousemove = resetTimer;
+                document.onscroll = resetTimer;
+                document.onclick = resetTimer;
+
+                function logout() {
+                    // Clear sessionStorage or localStorage
+                    sessionStorage.clear(); localStorage.clear();
+                    // Redirect to logout page or perform a logout action
+                    window.location.href = "../Formula1LogIn.aspx";
+                }
+
+                function resetTimer() {
+                    clearTimeout(time);
+                    time = setTimeout(logout, maxInactiveTime);
+                }
+            };
+            // Initialize inactivity timer
+            inactivityTime();
+        </script>
+        <script src="../assets/static/js/components/dark.js"></script>
+        <script src="../assets/static/js/pages/horizontal-layout.js"></script>
+        <script src="../assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+        <script src="../assets/static/js/initTheme.js"></script>
+        <script src="../assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+        <script src="../assets/compiled/js/app.js"></script>
+        <script src="../Ajax/Ajax.js"></script>
+        <script src="../Ajax/jquery.min.js"></script>
+        <script src="../assets/extensions/apexcharts/apexcharts.min.js"></script>
+        <script src="../assets/static/js/pages/dashboard.js"></script>
+        <script src="../assets/extensions/toastify-js/src/toastify.js"></script>
+        <script src="../assets/js/FlipClock.js"></script>
+        <%-- CSS Style are top of the form --%>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </form>
+</body>
+</html>
